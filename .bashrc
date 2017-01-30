@@ -29,12 +29,12 @@ export PS1='\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;36m\]\h \[\033[01;33m\]\w
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 
+# mac only
 PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
-test -e ~/.dircolors && \ 
+test -e ~/.dircolors && eval `dircolors -b ~/.dircolors`
+# end mac only
 
-# dircolors
-eval `dircolors -b ~/.dircolors`
 alias ls="ls --color=always" 
 alias grep="grep --color=always"
 alias egrep="egrep --color=always"
