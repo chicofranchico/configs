@@ -36,8 +36,6 @@ test -e ~/.dircolors && eval `dircolors -b ~/.dircolors`
 # end mac only
 
 alias ls="ls --color=always" 
-alias grep="grep --color=always"
-alias egrep="egrep --color=always"
 
 # Alias definitions.
 if [ -f ~/.bash_aliases ]; then
