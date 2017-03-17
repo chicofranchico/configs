@@ -30,9 +30,12 @@ export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 
 # mac only
-PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
-test -e ~/.dircolors && eval `dircolors -b ~/.dircolors`
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+  MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+  # (coreutils)
+  test -e ~/.dircolors && eval `dircolors -b ~/.dircolors`
+fi
 # end mac only
 
 alias ls="ls --color=always" 
