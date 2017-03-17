@@ -1,3 +1,3 @@
 # configs
 
-Collection of various configs
+Collection of various configs and dotfiles
