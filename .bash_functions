@@ -46,3 +46,14 @@ function ssh_no_ask_pass () {
   unset SSH_ASKPASS
 
 }
+
+function rspec_this {
+  export PUPPET_VERSION=3.8.7
+  export STRINGIFY_FACTS=no
+  export TRUSTED_NODE_DATA=yes
+  bundle --without development
+  bundle exec rake
+  export FUTURE_PARSER=yes
+  bundle exec rake
+}
+
