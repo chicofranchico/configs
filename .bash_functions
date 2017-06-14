@@ -3,7 +3,7 @@ function pull {
     git pull origin "$1"
   else
     branch=$(git branch | grep '*' | cut -d'*' -f2 | tr -d ' ')
-    git pull origin master
+    git pull origin $branch
   fi
 }
 
