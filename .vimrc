@@ -26,5 +26,8 @@ set expandtab                   " (et) expand tabs to spaces (use :retab to redo
 set shiftwidth=2                " (sw) width (in spaces) used in each step of autoindent (aswell as << and >>)
 set shiftround                  " (sr) indent/outdent to nearest tabstop
 
+set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:␣
+"set list
+
 set nu
 set mouse=a
