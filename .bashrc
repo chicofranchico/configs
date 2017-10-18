@@ -25,7 +25,6 @@ shopt -s checkwinsize
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-export PS1='\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;36m\]\h \[\033[01;33m\]\w \[\033[01;35m\]\$ \[\033[00m\]'
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 
@@ -35,10 +34,9 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
   # (coreutils)
   test -e ~/.dircolors && eval `dircolors -b ~/.dircolors`
+  alias ls="ls --color=auto"
 fi
 # end mac only
-
-alias ls="ls --color=always" 
 
 # Alias definitions.
 if [ -f ~/.bash_aliases ]; then
@@ -55,12 +53,17 @@ if [ -f ~/.readline-bindings ] ; then
   bind -f ~/.readline-bindings
 fi
 
-# Source global definitions
-if [ -f /etc/bashrc ]; then
-  . /etc/bashrc
+# git autocompletion
+if [ -f ~/.git-completion.bash ]; then
+  . ~/.git-completion.bash
 fi
 
-# User specific aliases and functions
+#######################################
+# User specific aliases and functions #
+#######################################
+
+source ~/.bash-powerline.sh
+
 
 # ssh agent
 if [ ! -S ~/.ssh/ssh_auth_sock ]; then
@@ -68,6 +71,7 @@ if [ ! -S ~/.ssh/ssh_auth_sock ]; then
   ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
 fi
 export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
+# ssh-add -K /path/to/key
 ssh-add -l | grep "The agent has no identities" && ssh-add
 unset SSH_ASKPASS
 
