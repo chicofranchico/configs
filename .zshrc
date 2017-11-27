@@ -76,6 +76,8 @@ export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
 ssh-add -l | grep "The agent has no identities" && ssh-add -K ~/.ssh/teralytics_rsa
 unset SSH_ASKPASS
 
+gpg-agent --daemon 2>&1 | grep -q "already running" || echo "GPG agent loaded."
+
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
