@@ -1,0 +1,26 @@
+[core]
+  excludesfile = /Users/chicofranchico/.gitignore
+[user]
+  name = Francisco de Freitas
+  email = <here_be_email>
+	signingkey = <here_be_key>
+[gpg]
+	program = gpg
+[commit]
+	gpgSign = true
+
+[alias]
+  pl = pull
+  ss = stash show -p
+  sp = submodule update --recursive
+  co = checkout
+  cb = checkout -b
+  ci = commit
+  st = status
+  br = branch
+  ba = branch -a
+  fe = fetch
+  hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+  type = cat-file -t
+  dump = cat-file -p
+
