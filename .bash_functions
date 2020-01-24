@@ -1,6 +1,7 @@
 #!/bin/bash
 
 function pull {
+  git fe -p
   if [ ! -z "$1" ]; then
     git pull origin "$1"
   else
@@ -20,7 +21,7 @@ function push {
 
 function rmlocalbranches {
   branch=$(git branch | grep '*' | cut -d'*' -f2 | tr -d ' ')
-  if [ $branch == "master" ] ; then
+  if [ $branch = "master" ] ; then
     git branch --merged | grep -v '*' | xargs git branch -d
   else
     >&2 echo "Tried to use rmlocalbranches not on master. This will delete master branch. Abort."
@@ -28,28 +29,7 @@ function rmlocalbranches {
 
 }
 
-_complete_ssh_hosts () {
-        COMPREPLY=()
-        cur="${COMP_WORDS[COMP_CWORD]}"
-        comp_ssh_hosts=`cat ~/.ssh/known_hosts | \
-                        cut -f 1 -d ' ' | \
-                        sed -e s/,.*//g | \
-                        grep -v ^# | \
-                        uniq | \
-                        grep -v "\[" ;
-        cat ~/.ssh/config | \
-                        grep "^Host " | \
-                        awk '{print $2}'
-                `
-        COMPREPLY=( $(compgen -W "${comp_ssh_hosts}" -- $cur))
-        return 0
-}
-complete -F _complete_ssh_hosts ssh
-
-complete -W "\`grep -oE '^[a-zA-Z0-9_-]+:([^=]|$)' Makefile | sed 's/[^a-zA-Z0-9_-]*$//'\`" make
-
 function ssh_no_ask_pass () {
-
   if [ ! -S ~/.ssh/ssh_auth_sock ]; then
     eval `ssh-agent`
     ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
@@ -61,8 +41,8 @@ function ssh_no_ask_pass () {
 }
 
 is_today_sate_gai () {
-  dow=$(curl -s http://www.chiang-mai.ch/take-away-montag/ | grep -B1 "Sat&egrave; Gai" | grep Tagesmen | awk -F'&uuml' '{print $2}' | cut -c5- | awk -F'<' '{print $1}' | sed -e 's/\&.*//' ) 
-  [[ ${dow} == $(LC_ALL=de_DE date +%A) ]] && echo "Today is Satè Gay day! :)" || echo "No Satè Gai today :( It's on ${dow}"
+  dow=$(curl -s https://www.chiang-mai.ch/menu | grep -v -e '^[[:space:]]*$' | grep -B12 "Satè Gai" | grep "h1" | sed -e 's/<h1/|/g' | awk -F'|' '{print $2}' | sed -e 's/—/-/g' | cut -d'-' -f3 | awk '{print "\""$0"\""}' | cut -d'>' -f2 | tr -d ' ' | tr -d '"') 
+  [[ ${dow} == $(LC_ALL=de_DE date +%A) ]] && echo "Today is Satè Gai day! :)" || echo "No Satè Gai today :( It's on ${dow}"
 }
 
 # following functions taken from here: https://github.com/Daenyth/dotfiles/blob/master/.bashrc
@@ -96,3 +76,18 @@ function ask() {
 }
 # }}}
 
+function myip() {
+  echo "dig +short myip.opendns.com @resolver1.opendns.com"
+  dig +short myip.opendns.com @resolver1.opendns.com
+}
+
+function dc_trace_cmd() {
+  local parent=`docker inspect -f '{{ .Parent }}' $1` 2>/dev/null
+  declare -i level=$2
+  echo ${level}: `docker inspect -f '{{ .ContainerConfig.Cmd }}' $1 2>/dev/null`
+  level=level+1
+  if [ "${parent}" != "" ]; then
+    echo ${level}: $parent
+    dc_trace_cmd $parent $level
+  fi
+}

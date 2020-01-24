@@ -12,10 +12,11 @@ fi
 # Initialize
 # Determine within a startup script whether Bash is running interactively or not.
 [ -z "$PS1" ] && return
+#echo $(basename $BASH_SOURCE) loaded.
+fortune
 
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
-
 
 # the default umask is set in /etc/profile; for setting the umask
 # for ssh logins, install and configure the libpam-umask package.
@@ -36,3 +37,8 @@ fi
 
 
 test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
