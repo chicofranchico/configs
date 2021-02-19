@@ -8,6 +8,17 @@ export ZSH_THEME="powerlevel9k/powerlevel9k"
 
 setopt extended_glob
 
+HISTCONTROL=ignoreboth
+
+# append to the history file, don't overwrite it
+#shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE
+HISTSIZE=99999
+HISTFILESIZE=999999
+SAVEHIST=$HISTSIZE
+HISTTIMEFORMAT="%d/%m/%y %T "
+
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
@@ -126,4 +137,12 @@ source /usr/local/bin/virtualenvwrapper.sh
 export PATH="$PATH:$HOME/.rvm/bin"
 
 kubeoff
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/local/bin/mc mc
+
+# make sure gcloud uses the system's python (newer python versions don't work properly)
+export CLOUDSDK_PYTHON="/usr/bin/python"
+
+source <(stern --completion=zsh)
 
