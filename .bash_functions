@@ -1,7 +1,17 @@
 #!/bin/bash
 
+getpodsbynode() {
+  if [ "$1" = "" ] ; then
+    echo "You must specify a valid node name. Node names are:" >&2
+    kubectl get nodes
+    return 3
+  fi
+  kubectl get pods --all-namespaces -o wide --field-selector spec.nodeName=$1
+
+}
+
 function pull {
-  git fe -p
+  git fe --all -p
   if [ ! -z "$1" ]; then
     git pull origin "$1"
   else
