@@ -10,6 +10,39 @@ getpodsbynode() {
 
 }
 
+reviewthisbranch() {
+  if ! command -v hub &> /dev/null
+  then
+    echo "'hub' could not be found"
+    exit
+  fi
+
+  if [ "$1" = "" ] ; then
+    echo "You must specify the target branch in the command line (master, devel).  Cannot continue." >&2
+    return 6
+  fi
+
+  if [ "$2" = "" ] ; then
+    echo "You must specify reviewers in the command line. (person1,person2,personX).  Cannot continue." >&2
+    return 7
+  fi
+
+
+  branch=$(git rev-parse --abbrev-ref HEAD)
+  if [ "$branch" = "master" ] || [ "${branch}" = "devel" ] ; then
+    echo "You are on the ${branch} branch. Cannot continue." >&2
+    return 4
+  fi
+  git push --set-upstream origin "$branch"
+
+  PR_TEMPLATE=$(git rev-parse --show-toplevel)"/.github/PULL_REQUEST_TEMPLATE.md"
+  if [[ -e $PR_TEMPLATE ]]; then
+    hub pull-request -b $1 -F $PR_TEMPLATE -e -r $2
+  else
+    hub pull-request -b $1 -m $(git rev-parse --abbrev-ref HEAD) -e -r $2
+  fi
+}
+
 function pull {
   git fe --all -p
   if [ ! -z "$1" ]; then
